@@ -1,0 +1,10 @@
+{
+    "Name": "Session",
+    "InvocationName": "Session",
+    
+    
+    
+    "Runtime": "java8",
+    "Role": "???arn:aws:iam::lambda_basic_execution???",
+    "Handler": "session.SessionSpeechletRequestStreamHandler"
+}

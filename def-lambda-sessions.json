@@ -1,0 +1,6 @@
+{
+    "FunctionName": "Session-Example-Skill",
+    "Runtime": "java8",
+    "Role": "arn:aws:iam::221446323016:role/lambda_basic_execution",
+    "Handler": "session.SessionSpeechletRequestStreamHandler"
+}

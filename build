@@ -1,0 +1,5 @@
+mvn -DdescriptorId=jar-with-dependencies clean assembly:assembly package
+
+# aws lambda create-function --cli-input-json fileb://def-lambda-sessions.json --zip-file fileb://samples/target/alexa-skills-kit-samples-1.0-jar-with-dependencies.jar
+
+# aws lambda update-function-code --function-name Session-Example-Skill --zip-file fileb://samples/target/alexa-skills-kit-samples-1.0-jar-with-dependencies.jar
