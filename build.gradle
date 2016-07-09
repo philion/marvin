@@ -11,19 +11,8 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 defaultTasks = ['fatJar']
-mainClassName = 'com.acmerocket.marvin.Launcher'
 
-//create a single Jar with all dependencies
-task fatJar(type: Jar) {
-	manifest {
-        attributes 'Implementation-Title': 'Gradle Jar File Example',  
-        	'Implementation-Version': version,
-        	'Main-Class': 'Launcher'
-    }
-    baseName = project.name
-    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
-    with jar
-}
+mainClassName = 'com.acmerocket.marvin.Launcher'
 
 repositories {
      maven { url "http://repo.maven.apache.org/maven2" }
@@ -44,3 +33,37 @@ dependencies {
     compile group: 'com.amazonaws', name: 'aws-lambda-java-core', version:'1.1.0'
     compile group: 'com.amazonaws', name: 'aws-java-sdk-dynamodb', version:'1.11.15'
 }
+
+//create a single Jar with all dependencies
+task fatJar(type: Jar) {
+	manifest {
+        attributes 'Implementation-Title': 'Gradle Jar File Example',  
+        	'Implementation-Version': version,
+        	'Main-Class': 'Launcher'
+    }
+    baseName = project.name
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
+
+task deploy(type:Exec) {
+  //on linux
+  commandLine 'aws lambda create-function'
+
+  //store the output instead of printing to the console:
+  standardOutput = new ByteArrayOutputStream()
+
+  //extension method stopTomcat.output() can be used to obtain the output:
+  ext.output = {
+    return standardOutput.toString()
+  }
+}
+
+// aws lambda create-function --cli-input-json fileb://def-lambda-sessions.json --zip-file fileb://samples/target/alexa-skills-kit-samples-1.0-jar-with-dependencies.jar
+
+// aws lambda update-function-code --function-name Session-Example-Skill --zip-file fileb://samples/target/alexa-skills-kit-samples-1.0-jar-with-dependencies.jar
+
+//     "FunctionName": "Session-Example-Skill",
+//    "Runtime": "java8",
+//    "Role": "arn:aws:iam::221446323016:role/lambda_basic_execution",
+//    "Handler": "session.SessionSpeechletRequestStreamHandler"
